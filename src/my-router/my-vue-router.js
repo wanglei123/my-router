@@ -10,12 +10,6 @@ class MyVueRouter {
       this.current = window.location.hash.slice(1)
     })
   }
-
-
-
-  
-
-
 }
 
 // 形参1是vue的构造函数
@@ -54,10 +48,7 @@ MyVueRouter.install = function(_vue){
         // 数据响应式：数据变化可侦听，使用这些数据组件就会和响应式数据产生依赖关系，将来如果响应式数据发生变化，这些组件将会重新渲染
         // hash值，去routes里找到该路由对应的组件，放到h函数里，就可以在router-view中渲染该组件
         render(h){
-          console.log(this.$router.routes)
-          console.log(this.$router.current)
           const route = this.$router.routes.find(route => route.path === this.$router.current)
-          console.log('route'. routeObj)
           return h(route.component)
         }
       });
