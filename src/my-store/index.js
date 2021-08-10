@@ -13,10 +13,15 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    add(ctx){
+    addAction(ctx){
       setTimeout(()=>{
         ctx.commit('add')
       }, 1000)
+    }
+  },
+  getters: {
+    doubleCounter: (state) => {
+      return state.counter * 2
     }
   },
   modules: {
