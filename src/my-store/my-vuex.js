@@ -20,6 +20,7 @@ class Store{
         return fn(store.state)
       }
 
+      // 添加只读属性
       Object.defineProperty(store.getters, key, {
         get: () => {
           return store._vm[key]
