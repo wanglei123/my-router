@@ -21,6 +21,7 @@ class Store{
       }
 
       // 添加只读属性
+      // 测试git push
       Object.defineProperty(store.getters, key, {
         get: () => {
           return store._vm[key]
