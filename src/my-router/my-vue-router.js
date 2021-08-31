@@ -1,15 +1,55 @@
+import view from './my-router-view'
+
 let vue = null;
 
 class MyVueRouter {
   constructor($options){
     this.routes = $options.routes
     // 将current设置为响应式数据
-    vue.util.defineReactive(this, 'current', window.location.hash.slice(1) || '/' )
+    // vue.util.defineReactive(this, 'current', window.location.hash.slice(1) || '/' )
+    this.current = window.location.hash.slice(1) || '/'
+    // 处理嵌套路由
+    // 2. 路由匹配时获取代表层级的数组
+    vue.util.defineReactive(this, 'matched', [])
+
+    // 初始化执行1次,match方法可以递归的遍历路由表，获取匹配关系的数组
+    this.match()
+    
+
     // 监听路由变化，获取最新的current
     window.addEventListener('hashchange', () => {
       this.current = window.location.hash.slice(1)
+      // 路由变化时重新匹配
+      this.matched = [];
+      this.match()
     })
   }
+
+  match(routes){
+    routes = routes || this.routes;
+    // 递归遍历
+    for (const route of routes) {
+      console.log('current', this.current, 'route.path',  route.path)
+      // 首页
+      if (route.path === '/' && this.current === '/'){
+        this.matched.push(route);
+        return;
+      }
+      //是当前路由的父级 例：/about/info
+      if (route.path !== '/' && this.current.indexOf(route.path) != -1){
+        console.log('route', route)
+        this.matched.push(route);
+        // 递归查找子路由，并放入matched
+        if (route.children){
+          console.log(333)
+          this.match(route.children)
+        }
+        return;
+      }
+    }
+  }
+
+
 }
 
 // 形参1是vue的构造函数
@@ -44,14 +84,16 @@ MyVueRouter.install = function(_vue){
         }
       });
 
-      vue.component('router-view', {
-        // 数据响应式：数据变化可侦听，使用这些数据组件就会和响应式数据产生依赖关系，将来如果响应式数据发生变化，这些组件将会重新渲染
-        // hash值，去routes里找到该路由对应的组件，放到h函数里，就可以在router-view中渲染该组件
-        render(h){
-          const route = this.$router.routes.find(route => route.path === this.$router.current)
-          return h(route.component)
-        }
-      });
+      // vue.component('router-view', {
+      //   // 数据响应式：数据变化可侦听，使用这些数据组件就会和响应式数据产生依赖关系，将来如果响应式数据发生变化，这些组件将会重新渲染
+      //   // hash值，去routes里找到该路由对应的组件，放到h函数里，就可以在router-view中渲染该组件
+      //   render(h){
+      //     const route = this.$router.routes.find(route => route.path === this.$router.current)
+      //     return h(route.component)
+      //   }
+      // });
+
+      vue.component('router-view', view)
     }
   })
 

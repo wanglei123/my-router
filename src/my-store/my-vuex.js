@@ -14,6 +14,7 @@ class Store{
     const computed = {}
     this.getters = {}
     const store = this;
+    // 把getters遍历一下，
     Object.keys(this._wrapperGetters).forEach(key => {
       const fn = store._wrapperGetters[key]
       computed[key] = function(){
@@ -21,7 +22,6 @@ class Store{
       }
 
       // 添加只读属性
-      // 测试git push
       Object.defineProperty(store.getters, key, {
         get: () => {
           return store._vm[key]
