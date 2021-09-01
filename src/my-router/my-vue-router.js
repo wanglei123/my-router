@@ -29,7 +29,6 @@ class MyVueRouter {
     routes = routes || this.routes;
     // 递归遍历
     for (const route of routes) {
-      console.log('current', this.current, 'route.path',  route.path)
       // 首页
       if (route.path === '/' && this.current === '/'){
         this.matched.push(route);
@@ -37,11 +36,9 @@ class MyVueRouter {
       }
       //是当前路由的父级 例：/about/info
       if (route.path !== '/' && this.current.indexOf(route.path) != -1){
-        console.log('route', route)
         this.matched.push(route);
         // 递归查找子路由，并放入matched
         if (route.children){
-          console.log(333)
           this.match(route.children)
         }
         return;

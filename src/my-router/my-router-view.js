@@ -18,7 +18,6 @@ export default {
     
     let component = null;
     const route = this.$router.matched[deepth]
-    console.log(this.$router.matched, deepth)
     if (route){
       component = route.component
     }
