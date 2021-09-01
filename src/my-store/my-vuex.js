@@ -57,6 +57,7 @@ class Store{
     set state(value){
       console.error('请使用replace来操作')
     }
+    
   commit(type, payload){
     const entry = this._mutations[type]
     if (!entry){
