@@ -11,17 +11,22 @@ class Store{
     this._actions = options.actions
     this._wrapperGetters = options.getters
 
+    // 定义computed选项
     const computed = {}
+    // 给用户暴露一个getters，这样用户就可以使用store.getters.xxx
     this.getters = {}
+    // 保存this
     const store = this;
-    // 把getters遍历一下，
+    // 把getters遍历一下， {doubleCounter(state)}
     Object.keys(this._wrapperGetters).forEach(key => {
       const fn = store._wrapperGetters[key]
+      // 转换为computed可以使用的无参数形式
+      // 高阶函数
       computed[key] = function(){
         return fn(store.state)
       }
 
-      // 添加只读属性
+      // 用户访问getters是只读的，添加只读属性
       Object.defineProperty(store.getters, key, {
         get: () => {
           return store._vm[key]
@@ -37,6 +42,7 @@ class Store{
           $$state: options.state, 
         }
       },
+      // 是一个对象，是一些没有参数的函数
       computed // 计算属性会直接代理到vue的实例上，所以在上面可能直接使用store._vm[key] 来直接得到doubleCounter
     })
 
