@@ -20,7 +20,7 @@ class MyVueRouter {
 
 // 形参1是vue的构造函数
 MyVueRouter.install = function(_vue){
-  // 传入构造函数，我们可以修改它的原型，起到扩展作用，这时的构造ahsnhu，拿不到router
+  // 传入构造函数，我们可以修改它的原型，起到扩展作用，这时的构造函数，拿不到router
   vue = _vue;
 
   // 延迟执行，等到router的实例创建之后再执行
